@@ -1,30 +1,24 @@
-name: cleaning3.9
+name: erudio.cleaning
 channels:
-    - intel
     - conda-forge
-    - r
     - bioconda
 dependencies:
-    - python=3.9
+    - python=3.11
     - numpy
     - matplotlib
     - seaborn
-    - pandas=1
+    - pandas
     - scikit-learn
     - pip
     - requests
-    - r-base
-    - r-essentials 
     - tornado
     - numexpr
     - pyarrow
     - pytables
     - pyreadstat
-    - rpy2
     - simplejson
     - seqkit
     - llvmlite
-    - dask
     - pip:
         - beautifulsoup4
         - csvkit
@@ -43,7 +37,6 @@ dependencies:
         - rise
         - sqlalchemy
         - sqlalchemy-utils
-        - vaex
         - umap-learn
         - imbalanced-learn
         - toml
