@@ -1,0 +1,37 @@
+[project]
+name = "Cleaning-Data-Video"
+version = "2024.12.01"
+requires-python = ">=3.13"
+description = "Cleaning Data Video (Pearson)"
+authors = [
+  {name = "David Mertz, Ph.D.", email = "mertz@gnosis.cx"},
+]
+readme = "README.md"
+dependencies = [
+   "beautifulsoup4",
+   "csvkit",
+   "gensim",
+   "imbalanced-learn",
+   "jupyterlab",
+   "lxml",
+   "matplotlib",
+   "Metaphone",
+   "nltk",
+   "numpy",
+   "openpyxl",
+   "pandas",
+   "pip",
+   "pyarrow",
+   "pyreadstat",
+   "requests",
+   "rise",
+   "scikit-learn",
+   "seaborn",
+   "simplejson",
+   "sqlalchemy",
+   "sqlalchemy-utils",
+   "xlrd",
+]
+[tool.ruff]
+# Allow lines to 88 chars (Black compatible).
+line-length = 88
