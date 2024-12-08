@@ -1,7 +1,5 @@
 import io
-import pandas as pd
-import warnings
-warnings.simplefilter('ignore')
+import polars as pl
 
 data = """
 Student#,Last Name,First Name,Favorite Color,Age
@@ -23,4 +21,4 @@ Student_No,Last_Name,First_Name,Favorite_Color,Age
 6,Robinson,Sophia,blue,12
 """
 
-cleaned = pd.read_csv(io.StringIO(clean)).set_index('Student_No')
+cleaned = pl.read_csv(io.StringIO(clean))
