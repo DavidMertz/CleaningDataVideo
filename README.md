@@ -9,6 +9,7 @@ Unix-like systems, such as Linux and macOS) with only:
 
 ```sh
 $ git clone https://github.com/DavidMertz/CleaningDataVideo.git
+$ cd CleaningDataVideo
 $ curl -LsSf https://astral.sh/uv/install.sh | sh
 $ uv run jupyter lab
 ```
@@ -18,7 +19,7 @@ alone will not resolve.  I.e. a few link libraries and tools are likely not to
 be present when libraries explicitly included in `pyproject.toml` want them.
 
 Some likely candidates, and how to install them in Linux/macOS are shown.
-System that use installers other than `apt` probably also spell libraries
+System that use installers other than `apt` probably also spell library names
 slightly differently.
 
 ```sh
