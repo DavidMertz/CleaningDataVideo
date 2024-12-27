@@ -23,13 +23,13 @@ import simplejson
 import requests
 import numpy as np
 import pandas as pd
+import polars as pl
 from cycler import cycler
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from matplotlib import cm
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
-import seaborn as sns
 from sqlalchemy import create_engine
 
 from sklearn.datasets import load_digits, load_breast_cancer
@@ -54,29 +54,12 @@ nltk.download('stopwords', quiet=True)
 import warnings
 warnings.simplefilter('ignore')
 
-# Only show 8 rows from large DataFrame
-pd.options.display.max_rows = 8
-pd.options.display.min_rows = 8
-
 # A bit of setup for monochrome book; not needed for most work
 monochrome = (cycler('color', ['k', '0.5']) *
               cycler('linestyle', ['-', '-.', ':']))
 plt.rcParams['axes.prop_cycle'] = monochrome
 plt.rcParams['figure.dpi'] = 100
 plt.rcParams['savefig.dpi'] = 600
-
-
-@contextmanager
-def show_more_rows(new=sys.maxsize):
-    old_max = pd.options.display.max_rows
-    old_min = pd.options.display.min_rows
-    try:
-        pd.set_option("display.max_rows", new)
-        pd.set_option('display.min_rows', new)
-        yield old_max
-    finally:
-        pd.options.display.max_rows = old_max
-        pd.options.display.min_rows = old_min
 
 # Utility function
 def random_phone(reserved=True):
