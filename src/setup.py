@@ -54,13 +54,6 @@ nltk.download('stopwords', quiet=True)
 import warnings
 warnings.simplefilter('ignore')
 
-# A bit of setup for monochrome book; not needed for most work
-monochrome = (cycler('color', ['k', '0.5']) *
-              cycler('linestyle', ['-', '-.', ':']))
-plt.rcParams['axes.prop_cycle'] = monochrome
-plt.rcParams['figure.dpi'] = 100
-plt.rcParams['savefig.dpi'] = 600
-
 # Utility function
 def random_phone(reserved=True):
     digits = '0123456789'
