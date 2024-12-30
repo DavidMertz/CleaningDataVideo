@@ -7472,7 +7472,20 @@ main {
 </div>
 </div>
 </div>
-</div></section></section><section><section>
+</div><aside class="notes">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>A speaker at a data science conference a few years ago made a joke—perhaps one already widely repeated by the time he told it—about talking with a colleague of his.  The colleague complained of data cleaning taking up half of her time, in response to which the speaker expressed astonishment that it could be so little as 50%.</p>
+<p>Without worrying too much about assigning a precise percentage, in my experience working as a technologist and data scientist, I have found that the bulk of what I do is preparing my data for the statistical analyses, machine learning models, or nuanced visualizations that I would like to utilize it for.  Although hopeful executives, or technical managers a bit removed from the daily work, tend to have an eternal optimism that the next set of data the organization acquires will be clean and easy to work with, I have yet to find that to be true in my concrete experience.</p>
+</div>
+</div>
+</div>
+</div>
+</aside></section></section><section><section>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7490,8 +7503,6 @@ main {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>A speaker at a data science conference a few years ago made a joke—perhaps one already widely repeated by the time he told it—about talking with a colleague of his.  The colleague complained of data cleaning taking up half of her time, in response to which the speaker expressed astonishment that it could be so little as 50%.</p>
-<p>Without worrying too much about assigning a precise percentage, in my experience working as a technologist and data scientist, I have found that the bulk of what I do is preparing my data for the statistical analyses, machine learning models, or nuanced visualizations that I would like to utilize it for.  Although hopeful executives, or technical managers a bit removed from the daily work, tend to have an eternal optimism that the next set of data the organization acquires will be clean and easy to work with, I have yet to find that to be true in my concrete experience.</p>
 <p>Certainly, some data is better and some is worse.  But <em>all data is dirty</em>, at least within a very small margin of error in the tally.  Even data sets that have been published, carefully studied, and that are widely distributed as canonical examples for statistics textbooks or software libraries, generally have a moderate number of data integrity problems.  Even after our best pre-processing, a more attainable goal should be to make our data <em>less dirty</em>; making it <em>clean</em> remains unduly utopian in aspiration.</p>
 <p>By all means we should distinguish <em>data quality</em> from <em>data utility</em>.  These descriptions are roughly orthogonal to each other.  Data can be dirty (up to a point) but still be enormously useful.  Data can be (relatively) clean but have little purpose, or at least not be fit for purpose.  Concerns about the choice of measurements to collect, or about possible selection bias, or other methodological or scientific questions are mostly outside the scope of this book.  However, a fair number of techniques I present can <em>aid</em> in evaluating the utility of data, but there is often no mechanical method of remedying systemic issues.  For example, statistics and other analyses may reveal—or at least strongly suggest—the unreliability of a certain data field.  But the techniques in this book cannot generally automatically fix that unreliable data or collect better data.</p>
 <p>The code shown throughout this book is freely available.  However, the purpose of this book is not learning to use the particular tools used for illustration, but to understand the underlying purpose of data quality.  The concepts presented should be applicable in any programming language used for data processing and machine learning.  I hope it will be easy to adapt the techniques I show to your own favorite collection of tools and programming languages.</p>
@@ -7584,25 +7595,25 @@ Student#,Last Name,First Name,Favorite Color,Age
 </div>
 </div>
 </div>
-</aside><aside class="notes">
+</aside></section></section><section><section>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Nomenclature">Nomenclature<a class="anchor-link" href="#Nomenclature">¶</a></h2><p>| Field-like  | Record-like
+<h2 id="Nomenclature">Nomenclature<a class="anchor-link" href="#Nomenclature">¶</a></h2><pre><code>| Field-like  | Record-like 
 |-------------|-------------
 | Feature     | Row
 | Measurement | Observation
 | Column      | Sample
 | Field       | Record
-| Variable    |</p>
+| Variable    |
+</code></pre>
 </div>
 </div>
 </div>
-</div>
-</aside><aside class="notes">
+</div><aside class="notes">
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
