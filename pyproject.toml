@@ -17,6 +17,7 @@ dependencies = [
    "lxml",
    "matplotlib",
    "Metaphone",
+   "nbconvert[webpdf]",
    "nltk",
    "pandas",
    "polars",
