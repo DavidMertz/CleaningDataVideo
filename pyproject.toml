@@ -21,7 +21,7 @@ dependencies = [
    "nltk",
    "pandas",
    "polars",
-   "requests",
+   "pymongo",
    "scikit-learn",
    "simplejson",
    "sqlalchemy",
