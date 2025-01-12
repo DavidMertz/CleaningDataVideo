@@ -11,6 +11,7 @@ dependencies = [
    "altair",
    "beautifulsoup4",
    "csvkit",
+   "great_tables",
    "imbalanced-learn",
    "jupyterlab",
    "jupyterlab-rise>=0.42.0",
