@@ -1,49 +1,41 @@
-import os
+import dbm
 import io
-import sys
-import gzip
+import json
+import math
 import re
 import sqlite3
-import dbm
-from glob import glob
-from datetime import datetime, date, timedelta
-from pprint import pprint
-from math import nan, inf, pi as π, e
-import math
-from random import seed, choice, randint, sample
-from contextlib import contextmanager
+import sys
 from collections import namedtuple
-from collections import Counter
-from itertools import islice
+from datetime import datetime
+from glob import glob
+from math import nan, inf, pi as π, e
+from pprint import pprint
+from random import seed, choice, randint, sample
 from textwrap import fill
-from dataclasses import dataclass, astuple, asdict, fields
-import json
-from jsonschema import validate, ValidationError
-import simplejson
+
+import matplotlib.pyplot as plt
+import nltk
 import numpy as np
 import pandas as pd
 import polars as pl
-from cycler import cycler
-import matplotlib.pyplot as plt
+import seaborn as sns
+import simplejson
 from matplotlib.colors import ListedColormap
 from matplotlib import cm
-from matplotlib.patches import Polygon
-from matplotlib.collections import PatchCollection
-from sqlalchemy import create_engine
 
-from sklearn.datasets import load_digits, load_breast_cancer
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.manifold import TSNE
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.feature_selection import RFECV, RFE
-
-from IPython.display import Image as Show
-import nltk
+# Quieting linter
+_ = datetime
+_ = glob
+_ = io
+_ = math
+_ = pl
+_ = pprint
+_ = re
+_ = simplejson
+_ = sns
+_ = sqlite3
+_ = sys
+_, _, _, _ = nan, inf, π, e
 
 # Might use tokenization/stopwords
 nltk.download("punkt", quiet=True)
@@ -92,53 +84,6 @@ def not_valid(instance, schema):
         return str(err)
 
 
-def make_bad_amtrak():
-    "Create deliberately truncated data"
-    out = io.StringIO()
-    df = pd.read_csv("data/AMTRAK-Stations-Database_2012.csv")
-    df = df[["Code", "StationName", "City", "State"]]
-    df["Visitors"] = np.random.randint(0, 35_000, 973)
-    df["StationName"] = df.StationName.str.split(", ", expand=True)[0]
-    df["StationName"] = df.StationName.str[:20]
-    df["Visitors"] = np.clip(df.Visitors, 0, 2**15 - 1)
-    df.to_sql("bad_amtrak", engine, if_exists="replace", index=False)
-    sql = """
-        ALTER TABLE bad_amtrak
-        ALTER COLUMN "StationName" TYPE char(20),
-        ALTER COLUMN "Visitors" TYPE smallint;
-        """
-    cur = con.cursor()
-    cur.execute(sql)
-    cur.execute("COMMIT;")
-    describe = """
-        SELECT column_name, data_type, numeric_precision, character_maximum_length
-        FROM information_schema.columns
-        WHERE table_name='bad_amtrak';"""
-    cur.execute(describe)
-    for tup in cur:
-        print(f"{tup[0]}: {tup[1]} ({tup[2] or tup[3]})", file=out)
-    cur.execute("SELECT count(*) FROM bad_amtrak")
-    print("Rows:", cur.fetchone()[0], file=out)
-    return out.getvalue()
-
-
-def make_h5_hierarchy():
-    import h5py
-
-    np.random.seed(1)  # Make the notebook generate same random data
-    f = h5py.File("data/hierarchy.h5", "w")
-    f.create_dataset("/deeply/nested/group/my_data", (10, 10, 10, 10), dtype="i")
-    f.create_dataset("deeply/path/elsewhere/other", (20,), dtype="i")
-    f.create_dataset("deeply/path/that_data", (5, 5), dtype="f")
-    dset = f["/deeply/nested/group/my_data"]
-    np.random.seed(seed=1)
-    dset[...] = np.random.randint(-99, 99, (10, 10, 10, 10))
-    dset.attrs["author"] = "David Mertz"
-    dset.attrs["citation"] = "Cleaning Data Book"
-    dset.attrs["shape_type"] = "4-D integer array"
-    f.close()
-
-
 def show_boxplots(df, cols, whis=1.5):
     # Create as many horizontal plots as we have columns
     fig, axes = plt.subplots(len(cols), 1, figsize=(10, 2 * len(cols)))
@@ -151,7 +96,6 @@ def show_boxplots(df, cols, whis=1.5):
         axes[n].set_yticks([])
     # Fix spacing of subplots at the end
     fig.tight_layout()
-    plt.savefig(f"img/boxplot-{'_'.join(cols)}.png")
 
 
 def make_corrupt_digits():
@@ -159,7 +103,7 @@ def make_corrupt_digits():
     import random as r
 
     r.seed(1)
-    digits = load_digits().images[:50]
+    digits = load_digits().images[:50]  # type: ignore
     for digit in digits:
         for _ in range(3):
             x, y = r.randint(0, 7), r.randint(0, 7)
@@ -195,10 +139,9 @@ def show_digits(digits=digits, x=3, y=3, title="Digits"):
                 else:
                     s = str(img[i, j])
                     c = "k" if img[i, j] < 8 else "w"
-                text = ax.text(j, i, s, color=c, ha="center", va="center")
+                ax.text(j, i, s, color=c, ha="center", va="center")
     fig.suptitle(title, y=0)
     fig.tight_layout()
-    plt.savefig(f"img/{title}.png")
 
 
 kryptonite = pd.read_fwf("data/excited-kryptonite.fwf")
@@ -207,7 +150,7 @@ kryptonite = pd.read_fwf("data/excited-kryptonite.fwf")
 def plot_kryptonite(
     df=kryptonite, independent="Wavelength_nm", logx=True, imputed=False
 ):
-    fig, ax = plt.subplots(figsize=(10, 3))
+    _, ax = plt.subplots(figsize=(10, 3))
 
     (
         df[df.Kryptonite_type == "Green"].plot(
@@ -253,7 +196,6 @@ def plot_kryptonite(
     if imputed:
         title = f"{title} (imputed)"
     ax.set_title(title)
-    plt.savefig(f"img/{title}.png")
 
 
 DTI = pd.DatetimeIndex
@@ -263,7 +205,7 @@ date_series = pd.Series(
 )
 
 
-def plot_filled_trend(s=None):
+def plot_filled_trend(s: pd.DataFrame):
     n = len(s)
     line = pd.Series(np.linspace(s[0], s[-1], n), index=s.index)
     filled = s.fillna(pd.Series(line))
@@ -276,7 +218,6 @@ def plot_filled_trend(s=None):
     plt.legend()
     title = "Global imputation from linear trend"
     plt.title(title)
-    plt.savefig(f"img/{title}.png")
 
 
 philly = "data/philly_houses.json"
@@ -386,7 +327,7 @@ def make_ssa_synthetic(fname="data/Baby-Names-SSA.csv"):
     rank_to_freq = {"1": 1.0, "2": 0.9, "3": 0.8, "4": 0.7, "5": 0.6}
 
     # Read the rank popularity of names by year
-    df = pd.read_csv("data/Baby-Names-SSA.csv")
+    df = pd.read_csv(fname)
     df = df.set_index("Year").sort_index()
     unstack = df.unstack()
 
@@ -521,39 +462,6 @@ def plot_univariate_trends(df, Target="Target"):
         ax.plot(target, X[col])
         ax.set_title(f"{col} as a function of {Target}")
     fig.tight_layout()
-    plt.savefig(f'img/univariate-{"_".join(X.columns)}:{Target}.png')
-
-
-def read_glarp(cleanup=True):
-    df = pd.DataFrame()
-    # The different thermometers
-    places = ["basement", "lab", "livingroom", "outside"]
-    for therm in places:
-        with gzip.open("data/glarp/%s.gz" % therm) as f:
-            readings = dict()
-            for line in f:
-                Y, m, d, H, M, temp = line.split()
-                readings[datetime(*map(int, (Y, m, d, H, M)))] = float(temp)
-        df[therm] = pd.Series(readings)
-
-    if cleanup:
-        # Add in the relatively few missing times
-        df = df.asfreq("3T").interpolate()
-
-        # Remove reading with implausible jumps
-        diffs = df.diff()
-        for therm in places:
-            errs = diffs.loc[diffs[therm].abs() > 5, therm].index
-            df.loc[errs, therm] = None
-
-        # Backfill missing temperatures (at start)
-        df = df.interpolate().bfill()
-
-    # Sort by date but remove from index
-    df = df.sort_index().reset_index()
-    df = df.rename(columns={"index": "timestamp"})
-
-    return df
 
 
 def get_digits():
@@ -564,10 +472,9 @@ def get_digits():
     fig, axes = plt.subplots(
         2, 5, figsize=(10, 5), subplot_kw={"xticks": (), "yticks": ()}
     )
-    for ax, img in zip(axes.ravel(), digits.images):
+    for ax, img in zip(axes.ravel(), digits.images):  # type: ignore
         ax.imshow(img, cmap=plt.get_cmap("Greys"))
     fig.tight_layout()
-    fig.savefig("img/first-10-digits.png")
     return digits
 
 
@@ -596,7 +503,6 @@ def plot_digits(data, digits, decomp="Unknown", colors=grays10):
             fontdict={"size": 9},
         )
     plt.title(f"{decomp} Decomposition")
-    plt.savefig(f"img/{decomp}-decomposition.png")
 
 
 class requests:
@@ -625,25 +531,6 @@ from pymongo import MongoClient
 def connect_mongo():
     client = MongoClient(port=27017)
     return client
-
-
-# Utility function
-def random_phone(reserved=True):
-    digits = "0123456789"
-    area = "000"
-    while area.startswith("0"):
-        area = "".join(sample(digits, 3))
-    # DO NOT REMOVE prefix code
-    # it is not used now, but random seed assumes
-    # the exact same sequence of calls
-    prefix = "000"
-    while prefix.startswith("0"):
-        prefix = "".join(sample(digits, 3))
-    suffix = "".join(sample(digits, 4))
-    # -------------------------------------
-    if reserved:
-        prefix = "555"
-    return f"+1 {area} {prefix} {suffix}"
 
 
 # Make the "business" database
@@ -703,7 +590,7 @@ def make_mongo_biz(client=connect_mongo()):
                 review["phone"] = random_phone()
 
         # Insert business into MongoDB
-        result = db.reviews.insert_one(review)
+        db.reviews.insert_one(review)
 
     print("Created 50 restaurants; 5000 reviews")
 
