@@ -13,6 +13,7 @@ from pprint import pprint
 from random import seed, choice, randint, sample
 from textwrap import fill
 
+from great_tables import GT
 import matplotlib.pyplot as plt
 import nltk
 import numpy as np
@@ -22,6 +23,7 @@ import seaborn as sns
 import simplejson
 from matplotlib.colors import ListedColormap
 from matplotlib import cm
+
 
 # Quieting linter
 _ = datetime
