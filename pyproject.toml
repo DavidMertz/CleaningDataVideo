@@ -15,6 +15,7 @@ dependencies = [
    "imbalanced-learn",
    "jupyterlab",
    "jupyterlab-rise>=0.42.0",
+   "levenshtein>=0.26.1",
    "lxml",
    "matplotlib",
    "Metaphone",
