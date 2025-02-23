@@ -128,7 +128,7 @@ def show_digits(digits=digits, x=3, y=3, title="Digits"):
         newcm = ListedColormap(newcolors)
 
     fig, axes = plt.subplots(
-        x, y, figsize=(x * 2.5, y * 2.5), subplot_kw={"xticks": (), "yticks": ()}
+        x, y, figsize=(x * 2, y * 2), subplot_kw={"xticks": (), "yticks": ()}
     )
 
     for ax, img in zip(axes.ravel(), digits):
